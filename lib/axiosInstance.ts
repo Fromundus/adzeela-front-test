@@ -1,9 +1,11 @@
 // import { auth } from '@/auth';
 import axios from 'axios';
+import fetchAdapter from '@vespaiach/axios-fetch-adapter';
 
 // Create an Axios instance
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL, // Set your API base URL
+  adapter: fetchAdapter,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
