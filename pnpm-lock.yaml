@@ -106,9 +106,6 @@ importers:
       '@uploadthing/react':
         specifier: ^5.7.0
         version: 5.7.0(@uploadthing/mime-types@0.2.10)(next@14.2.24(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(uploadthing@5.7.4)
-      '@vespaiach/axios-fetch-adapter':
-        specifier: ^0.3.1
-        version: 0.3.1(axios@1.7.9)
       autoprefixer:
         specifier: 10.4.15
         version: 10.4.15(postcss@8.4.28)
@@ -2223,15 +2220,6 @@ packages:
     peerDependenciesMeta:
       '@uploadthing/mime-types':
         optional: true
-
-  '@vespaiach/axios-fetch-adapter@0.3.1':
-    resolution:
-      {
-        integrity: sha512-+1F52VWXmQHSRFSv4/H0wtnxfvjRMPK5531e880MIjypPdUSX6QZuoDgEVeCE1vjhzDdxCVX7rOqkub7StEUwQ==,
-        tarball: https://registry.npmjs.org/@vespaiach/axios-fetch-adapter/-/axios-fetch-adapter-0.3.1.tgz
-      }
-    peerDependencies:
-      axios: '>=0.26.0'
 
   acorn-jsx@5.3.2:
     resolution:
@@ -7818,10 +7806,6 @@ snapshots:
   '@uploadthing/shared@5.2.7(@uploadthing/mime-types@0.2.10)':
     optionalDependencies:
       '@uploadthing/mime-types': 0.2.10
-
-  '@vespaiach/axios-fetch-adapter@0.3.1(axios@1.7.9)':
-    dependencies:
-      axios: 1.7.9
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
