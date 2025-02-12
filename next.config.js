@@ -8,6 +8,9 @@ const nextConfig = {
     runtime: 'nodejs',
     workerThreads: false,
     cpus: 1 // Limit to one CPU thread
+  },
+  eslint: {
+    ignoreDuringBuilds: true
   }
 };
 

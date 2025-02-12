@@ -31,18 +31,15 @@ const formSchema = z.object({
   access: z.any(),
   subscriptions: z.any(),
   roles: z.any(),
-  usertype: z.string().nonempty('user type is required'),
-
-
+  usertype: z.string().nonempty('user type is required')
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
 
-
 interface UserInfoFormProps {
   mode: 'add' | 'edit';
   userId?: number;
-  user: User | null
+  user?: User | null;
 }
 
 const defaultValues = {
@@ -56,14 +53,7 @@ const defaultValues = {
   usertype: ''
 };
 
-const UserInfoForm: React.FC<UserInfoFormProps> = ({
-
-  mode,
-  userId,
-  user
-
-}) => {
-
+const UserInfoForm: React.FC<UserInfoFormProps> = ({ mode, userId, user }) => {
   const methods = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
     defaultValues
@@ -72,14 +62,12 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
 
-
   // TODO this options should be retrieve in the backend or transfer to seperate file
 
   const accessOptions = [
     { name: 'Admin', id: 1 },
     { name: 'User', id: 2 }
   ];
-
 
   const subscriptionOptions = [
     {
@@ -99,48 +87,45 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
       name: 'Queueing System'
     }
   ];
-  
-  
+
   useEffect(() => {
-      if (mode === 'edit' && userId) {
-        const fetchData = async () => {
-          try {
-            const response = await fetchUserById(userId);
-            const userData = response.data.data;
-  
-            console.log(userData.user_types?.user_type)
-            // console.log(subscriptionOptions);
-            methods.reset({
-              name: userData.name ?? '',
-              username: userData.username ?? '',
-              email: userData.email ?? '',
-              phone: userData.phone ?? '',
-              address: userData.address ?? '',
-              subscriptions: userData.subscriptions,
-              usertype: userData?.user_types?.user_type ?? '',
-              access: accessOptions.find(option => option.name === userData?.roles[0]),
-            
-            });
+    if (mode === 'edit' && userId) {
+      const fetchData = async () => {
+        try {
+          const response = await fetchUserById(userId);
+          const userData = response.data.data;
 
-  
-          } catch (error: any) {
-            toast({
-              title: 'Error',
-              description: `Failed to load user data: ${error.message}`,
-              variant: 'destructive'
-            });
-          }
-        };
-  
-        fetchData();
-      }
-    }, [mode, userId]);
+          console.log(userData.user_types?.user_type);
+          // console.log(subscriptionOptions);
+          methods.reset({
+            name: userData.name ?? '',
+            username: userData.username ?? '',
+            email: userData.email ?? '',
+            phone: userData.phone ?? '',
+            address: userData.address ?? '',
+            subscriptions: userData.subscriptions,
+            usertype: userData?.user_types?.user_type ?? '',
+            access: accessOptions.find(
+              (option) => option.name === userData?.roles[0]
+            )
+          });
+        } catch (error: any) {
+          toast({
+            title: 'Error',
+            description: `Failed to load user data: ${error.message}`,
+            variant: 'destructive'
+          });
+        }
+      };
 
+      fetchData();
+    }
+  }, [mode, userId]);
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
     try {
-      console.log(data)
+      console.log(data);
       if (mode === 'add') {
         await createUser(data);
         toast({
@@ -158,10 +143,12 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
         });
         router.push('/admin/users');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.message? error.message: 'There was an error saving the user.',
+        description: error.message
+          ? error.message
+          : 'There was an error saving the user.',
         variant: 'destructive'
       });
     } finally {
@@ -170,19 +157,21 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   };
 
   return (
-   <>
-    <div className="mt-4">
-                <p className="mb-3 text-primary">
-                {mode === 'add' ? 'Create User' : 'Edit User'}
-                </p>
-    </div>
+    <>
+      <div className="mt-4">
+        <p className="mb-3 text-primary">
+          {mode === 'add' ? 'Create User' : 'Edit User'}
+        </p>
+      </div>
 
-    <Card>
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full space-y-4 p-6">
-        <div className="grid space-x-3 space-y-3 xl:grid-cols-3">
-        
-        <div className="col-span-3">
+      <Card>
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="w-full space-y-4 p-6"
+          >
+            <div className="grid space-x-3 space-y-3 xl:grid-cols-3">
+              <div className="col-span-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <FormField
@@ -330,7 +319,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
                         <FormItem>
                           <FormLabel>Subscriptions</FormLabel>
                           <FormControl>
-                             <ReactSelect
+                            <ReactSelect
                               isDisabled={user?.roles?.find(
                                 (role: any) => role.name !== 'Admin'
                               )}
@@ -343,7 +332,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
                               getOptionValue={(option: any) => option.id}
                               // defaultValue="Admin"
                               className="w-full"
-                            /> 
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -352,61 +341,65 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
                   </div>
 
                   <div>
-                  <FormField
-          control={methods.control}
-          name="usertype"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>User Type</FormLabel>
-              <FormControl>
-                <div>
-                  <label style={{ marginRight: '10px' }}> {/* Adds spacing between label and input */}
-                    <input
-                      type="radio"
-                      {...field}
-                      value="Promoter"
-                      checked={field.value === 'Promoter'}
-                    /> <span style={{ marginLeft: '2px' }}></span>
-                    Promoter
-                  </label>
-                  <label style={{ marginRight: '10px' }}> {/* Adds spacing between label and input */}
-                    <input
-                      type="radio"
-                      {...field}
-                      value="Advertiser"
-                      checked={field.value === 'Advertiser'}
-                    /> <span style={{ marginLeft: '2px' }}></span>
-                    Advertiser
-                  </label>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+                    <FormField
+                      control={methods.control}
+                      name="usertype"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>User Type</FormLabel>
+                          <FormControl>
+                            <div>
+                              <label style={{ marginRight: '10px' }}>
+                                {' '}
+                                {/* Adds spacing between label and input */}
+                                <input
+                                  type="radio"
+                                  {...field}
+                                  value="Promoter"
+                                  checked={field.value === 'Promoter'}
+                                />{' '}
+                                <span style={{ marginLeft: '2px' }}></span>
+                                Promoter
+                              </label>
+                              <label style={{ marginRight: '10px' }}>
+                                {' '}
+                                {/* Adds spacing between label and input */}
+                                <input
+                                  type="radio"
+                                  {...field}
+                                  value="Advertiser"
+                                  checked={field.value === 'Advertiser'}
+                                />{' '}
+                                <span style={{ marginLeft: '2px' }}></span>
+                                Advertiser
+                              </label>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
               </div>
-        </div>
-              <div className="mt-4 space-x-3" style={{textAlign: 'right'}}>
-                <Button
-                    type="button"
-                    className="rounded-sm"
-                    variant="outline"
-                    onClick={() => router.push('/admin/users')}
-                >
-                    Back
-                </Button>
-                <Button type="submit" className="rounded-sm">
-                    {mode === 'add' ? 'Create' : 'Update'}
-                </Button>
             </div>
-      </form>
-    </FormProvider>
-    </Card>
-   </>
-
+            <div className="mt-4 space-x-3" style={{ textAlign: 'right' }}>
+              <Button
+                type="button"
+                className="rounded-sm"
+                variant="outline"
+                onClick={() => router.push('/admin/users')}
+              >
+                Back
+              </Button>
+              <Button type="submit" className="rounded-sm">
+                {mode === 'add' ? 'Create' : 'Update'}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
+      </Card>
+    </>
   );
 };
 
