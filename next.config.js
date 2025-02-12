@@ -2,12 +2,13 @@
 const nextConfig = {
   images: {
     domains: ['utfs.io', '127.0.0.1', 'localhost', 'adzeelav.local'],
-    unoptimized: true,
+    unoptimized: true
   },
   experimental: {
+    runtime: 'nodejs',
     workerThreads: false,
-    cpus: 1, // Limit to one CPU thread
-  },
+    cpus: 1 // Limit to one CPU thread
+  }
 };
 
 module.exports = nextConfig;
