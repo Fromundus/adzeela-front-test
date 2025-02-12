@@ -1,5 +1,7 @@
 import axiosInstance from '@/lib/axiosInstance';
 
+export const runtime = 'nodejs';
+
 const mediaUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/media`;
 
 export const fetchMedias = async () => {

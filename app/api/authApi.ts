@@ -1,5 +1,7 @@
 import axiosInstance from '@/lib/axiosInstance';
 
+export const runtime = 'nodejs';
+
 const url = process.env.NEXT_PUBLIC_API_URL + '/api/auth';
 
 export const login = async (credentials: any) => {

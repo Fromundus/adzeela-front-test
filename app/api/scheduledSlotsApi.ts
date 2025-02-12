@@ -1,6 +1,8 @@
 import axiosInstance from '@/lib/axiosInstance';
+export const runtime = 'nodejs';
 
-const scheduledSlotsUrl = process.env.NEXT_PUBLIC_API_URL + '/api/scheduled-slots';
+const scheduledSlotsUrl =
+  process.env.NEXT_PUBLIC_API_URL + '/api/scheduled-slots';
 
 export const fetchScheduledSlot = async () => {
   return axiosInstance.get(scheduledSlotsUrl);
